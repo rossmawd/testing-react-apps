@@ -5,6 +5,7 @@ import * as React from 'react'
 import {render, screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import Login from '../../components/login'
+import faker from 'faker'
 
 test('submitting the form calls onSubmit with username and password', () => {
   // 🐨 create a variable called "submittedData" and a handleSubmit function that
@@ -21,8 +22,17 @@ test('submitting the form calls onSubmit with username and password', () => {
   const passwordInput = screen.getByLabelText(/password/i)
   // 🐨 use userEvent.type to change the username and password fields to
   //    whatever you want
-  userEvent.type(usernameInput, 'Hello')
-  userEvent.type(passwordInput, 'IneedNoPassword')
+  // const username = faker.internet.userName()
+  // const password = faker.internet.password()
+  const buildLoginForm = () => {
+    return {
+      randomUsername: faker.internet.userName(),
+      randomPassword: faker.internet.password(),
+    }
+  }
+  const {randomUsername, randomPassword} = buildLoginForm()
+  userEvent.type(usernameInput, randomUsername)
+  userEvent.type(passwordInput, randomPassword)
   //
   // 🐨 click on the button with the text "Submit"
   const button = screen.getByRole('button', {name: /submit/i})
@@ -30,7 +40,10 @@ test('submitting the form calls onSubmit with username and password', () => {
   userEvent.click(button)
   // assert that submittedData is correct
   // expect(submittedData).toEqual({username: 'Hello', password: 'IneedNoPassword'})
-  expect(handleSubmit).toHaveBeenCalledWith({username: 'Hello', password: 'IneedNoPassword'})
+  expect(handleSubmit).toHaveBeenCalledWith({
+    username: randomUsername,
+    password: randomPassword,
+  })
   // 💰 use `toEqual` from Jest: 📜 https://jestjs.io/docs/en/expect#toequalvalue
 })
 
