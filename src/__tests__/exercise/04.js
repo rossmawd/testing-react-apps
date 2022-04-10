@@ -24,15 +24,16 @@ test('submitting the form calls onSubmit with username and password', () => {
   //    whatever you want
   // const username = faker.internet.userName()
   // const password = faker.internet.password()
-  const buildLoginForm = () => {
+  const buildLoginForm = ({password, username}) => {
+    console.log(password)
     return {
-      randomUsername: faker.internet.userName(),
-      randomPassword: faker.internet.password(),
+      chosenUsername: username ?? faker.internet.userName(),
+      chosenPassword: password ?? faker.internet.password(),
     }
   }
-  const {randomUsername, randomPassword} = buildLoginForm()
-  userEvent.type(usernameInput, randomUsername)
-  userEvent.type(passwordInput, randomPassword)
+  const {chosenUsername, chosenPassword} = buildLoginForm({password: 'abc'})
+  userEvent.type(usernameInput, chosenUsername)
+  userEvent.type(passwordInput, chosenPassword)
   //
   // 🐨 click on the button with the text "Submit"
   const button = screen.getByRole('button', {name: /submit/i})
@@ -41,8 +42,8 @@ test('submitting the form calls onSubmit with username and password', () => {
   // assert that submittedData is correct
   // expect(submittedData).toEqual({username: 'Hello', password: 'IneedNoPassword'})
   expect(handleSubmit).toHaveBeenCalledWith({
-    username: randomUsername,
-    password: randomPassword,
+    username: chosenUsername,
+    password: 'abc',
   })
   // 💰 use `toEqual` from Jest: 📜 https://jestjs.io/docs/en/expect#toequalvalue
 })
