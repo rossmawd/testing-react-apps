@@ -33,14 +33,15 @@ test('submitting the form calls onSubmit with username and password', () => {
   //    whatever you want
   // const username = faker.internet.userName()
   // const password = faker.internet.password()
-  const buildLoginForm = ({password, username}) => {
-    console.log(password)
+  const buildLoginForm = (overrides) => {
+   
     return {
-      chosenUsername: username ?? user.username,
-      chosenPassword: password ?? faker.internet.password(),
+      chosenUsername:  user.username,
+      chosenPassword: faker.internet.password(),
+      ...overrides
     }
   }
-  const {chosenUsername, chosenPassword} = buildLoginForm({password: 'abc'})
+  const {chosenUsername, chosenPassword} = buildLoginForm({chosenPassword: 'abc'})
   userEvent.type(usernameInput, chosenUsername)
   userEvent.type(passwordInput, chosenPassword)
   //
