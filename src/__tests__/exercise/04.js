@@ -6,6 +6,15 @@ import {render, screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import Login from '../../components/login'
 import faker from 'faker'
+import { build, oneOf } from '@jackfranklin/test-data-bot';
+
+const userBuilder = build('User', {
+  fields: {
+    username: oneOf('jack', 'Sam', 'DavidTheGreatDolphin','X1n')
+  }
+})
+
+const user = userBuilder();
 
 test('submitting the form calls onSubmit with username and password', () => {
   // 🐨 create a variable called "submittedData" and a handleSubmit function that
@@ -27,7 +36,7 @@ test('submitting the form calls onSubmit with username and password', () => {
   const buildLoginForm = ({password, username}) => {
     console.log(password)
     return {
-      chosenUsername: username ?? faker.internet.userName(),
+      chosenUsername: username ?? user.username,
       chosenPassword: password ?? faker.internet.password(),
     }
   }
@@ -45,6 +54,7 @@ test('submitting the form calls onSubmit with username and password', () => {
     username: chosenUsername,
     password: 'abc',
   })
+  console.log(chosenUsername, chosenPassword)
   // 💰 use `toEqual` from Jest: 📜 https://jestjs.io/docs/en/expect#toequalvalue
 })
 
